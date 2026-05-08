@@ -1,0 +1,104 @@
+// Version: 3.0.0
+type AttendanceId__1047620299 = Nat;
+type AttendanceRecord__699091857 =
+  {
+    classId : ClassId__339360970;
+    confidence : Float;
+    dateKey : Text;
+    id : AttendanceId__1047620299;
+    source : Text;
+    studentId : StudentId__888719682;
+    timestamp : Time__900049286
+  };
+type ClassId__339360970 = Nat;
+type ClassInternal__531461447 =
+  {
+    id : ClassId__339360970;
+    name : Text;
+    var studentIds : [StudentId__888719682];
+    teacher : TeacherId__584885075
+  };
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type Int__270357528 = Int__616954475;
+type Int__616954475 = Int;
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type List__415060402<T> = List__790383201<T>;
+type List__790383201<T> =
+  {
+    var blockIndex : Nat__490723111;
+    var blocks : [var [var ?T]];
+    var elementIndex : Nat__490723111
+  };
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type OldAccessControlState__841599830 =
+  {
+    var adminAssigned : Bool;
+    userRoles : Map__605269027<Principal, OldUserRole__889293160>
+  };
+type OldAttendanceRecord__238745332 =
+  {
+    classId : Nat;
+    confidence : Float;
+    dateKey : Text;
+    id : Nat;
+    studentId : Principal;
+    timestamp : Int
+  };
+type OldClassInternal__637415001 =
+  {id : Nat; name : Text; var studentIds : [Principal]; teacher : Principal};
+type OldProfile__14094539 =
+  {
+    faceImageUrl : Text;
+    id : Principal;
+    name : Text;
+    role : {#student; #teacher}
+  };
+type OldUserRole__889293160 = {#admin; #guest; #user};
+type Profile__953771824 =
+  {faceImageUrl : Text; id : Principal; name : Text; role : Role__79069643};
+type Role__79069643 = {#student; #teacher};
+type StudentId__888719682 = Principal;
+type TeacherId__584885075 = Principal;
+type Time__796480547 = Int__270357528;
+type Time__900049286 = Time__796480547;
+type UserRole__1073662873 = {#admin; #guest; #user};
+actor ({
+  in accessControlState : OldAccessControlState__841599830;
+  in classes : Map__605269027<Nat, OldClassInternal__637415001>;
+  in profiles : Map__605269027<Principal, OldProfile__14094539>;
+  in records : List__415060402<OldAttendanceRecord__238745332>;
+  in state : {var nextAttendanceId : Nat; var nextClassId : Nat}
+}, {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__605269027<Principal, UserRole__1073662873>
+    };
+  stable classes :
+    {
+      var root : Node__46230540<ClassId__339360970, ClassInternal__531461447>;
+      var size : Nat__490723111
+    };
+  stable profiles :
+    {
+      var root : Node__46230540<Principal, Profile__953771824>;
+      var size : Nat__490723111
+    };
+  stable records :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?AttendanceRecord__699091857]];
+      var elementIndex : Nat__490723111
+    };
+  stable state : {var nextAttendanceId : Nat; var nextClassId : Nat}
+});

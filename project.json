@@ -1,0 +1,21 @@
+{
+  "overview": "A face recognition based attendance system that automatically marks student attendance using camera capture and browser-based face matching. Students register their faces, and the system records attendance with timestamps, preventing proxy attendance.",
+  "features": [
+    "Role-based login for students and teachers",
+    "Face registration via camera capture",
+    "Real-time face recognition for automatic attendance marking",
+    "Student attendance history dashboard",
+    "Teacher class roster and attendance management",
+    "Duplicate attendance prevention per day"
+  ],
+  "category": "productivity",
+  "tags": [
+    "attendance",
+    "face-recognition",
+    "education",
+    "ai",
+    "camera",
+    "biometrics"
+  ],
+  "last_updated": "2026-05-08T17:29:14.134Z"
+}

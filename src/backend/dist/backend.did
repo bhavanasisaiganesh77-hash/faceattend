@@ -1,0 +1,85 @@
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type Time = int;
+type TeacherId = principal;
+type StudentStat = 
+ record {
+   presentCount: nat;
+   rate: float64;
+   studentId: StudentId;
+   studentName: text;
+   totalSessions: nat;
+ };
+type StudentId = principal;
+type Role = 
+ variant {
+   student;
+   teacher;
+ };
+type Profile = 
+ record {
+   faceImageUrl: text;
+   id: principal;
+   name: text;
+   role: Role;
+ };
+type ClassStat = 
+ record {
+   classId: ClassId;
+   className: text;
+   enrolledCount: nat;
+   presentCount: nat;
+   rate: float64;
+ };
+type ClassId = nat;
+type Class = 
+ record {
+   id: ClassId;
+   name: text;
+   studentIds: vec StudentId;
+   teacher: TeacherId;
+ };
+type AttendanceRecord = 
+ record {
+   classId: ClassId;
+   confidence: float64;
+   dateKey: text;
+   id: AttendanceId;
+   source: text;
+   studentId: StudentId;
+   timestamp: Time;
+ };
+type AttendanceId = nat;
+type AnalyticsResult = 
+ record {
+   classStats: vec ClassStat;
+   overallRate: float64;
+   studentStats: vec StudentStat;
+   totalClasses: nat;
+   totalStudents: nat;
+ };
+service : {
+  _initializeAccessControl: () -> ();
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  createClass: (name: text) -> (ClassId);
+  getAnalytics: (classId: opt ClassId, fromDate: opt text, toDate:
+   opt text) -> (AnalyticsResult) query;
+  getCallerUserRole: () -> (UserRole) query;
+  getClassAttendance: (classId: ClassId, dateKey: text) ->
+   (vec AttendanceRecord) query;
+  getMyAttendance: () -> (vec AttendanceRecord) query;
+  getMyProfile: () -> (opt Profile) query;
+  isCallerAdmin: () -> (bool) query;
+  joinClass: (classId: ClassId) -> (bool);
+  listClassStudents: (classId: ClassId) -> (vec StudentId) query;
+  listClasses: () -> (vec Class) query;
+  listStudents: () -> (vec Profile) query;
+  markAttendance: (classId: ClassId, studentId: principal, confidence:
+   float64) -> (opt AttendanceId);
+  markMyAttendanceQR: (classId: ClassId) -> (opt AttendanceId);
+  saveProfile: (name: text, role: Role, faceImageUrl: text) -> ();
+}
